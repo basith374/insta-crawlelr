@@ -1,8 +1,8 @@
+const path = require('path');
 const {Builder, By, until} = require('selenium-webdriver');
-const _ = require('lodash');
 
 if(process.argv.length < 3) {
-    console.log('usage: ' + _.last(process.argv[1].split('/')) + ' <tag> [<level>]');
+    console.log('usage: ' + path.basename(process.argv[1]) + ' <tag> [<level>]');
     process.exit();
 }
 let starttag = process.argv[2];
@@ -26,7 +26,7 @@ let leveldeep = parseInt(process.argv[3], 10) || 1;
                 let tags = [];
                 for(let e of taglinks) {
                     let tag = (await e.getText()).slice(1);
-                    if(!(tag in utags)) tags.push(tag);
+                    if(tag && !(tag in utags)) tags.push(tag);
                 }
                 for(let tag of tags) {
                     await finden(tag, level + 1);
